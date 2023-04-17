@@ -1,8 +1,6 @@
 **Laboratorio N°1**
 
-Acceso a collab (Dominio UTEM) : https://drive.google.com/file/d/1IpYYEnm9oITxaTcF1VFOMbU0gH9zFf0f/view?usp=sharing
-
----
+Acceso a collab: https://colab.research.google.com/drive/1IpYYEnm9oITxaTcF1VFOMbU0gH9zFf0f?authuser=3#scrollTo=7rWeEThXdYSW
 
 
 **Redes Neuronales - Funcionalidades**
