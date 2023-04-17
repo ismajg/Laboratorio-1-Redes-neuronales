@@ -1,5 +1,7 @@
 **Laboratorio N°1**
 
+Acceso a collab (Dominio UTEM) : https://drive.google.com/file/d/1IpYYEnm9oITxaTcF1VFOMbU0gH9zFf0f/view?usp=sharing
+
 ---
 
 
