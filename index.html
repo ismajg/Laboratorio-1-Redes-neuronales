@@ -15,6 +15,12 @@
         font-size: 6rem;
         text-align: center;
       }
+#fileInput {
+  display: block;
+  margin: 0 auto;
+}
+
+
     </style>
   </head>
   <body>
@@ -32,6 +38,11 @@
       <div class="container mt-5">
         <div class="row">
           <div class="col-12 col-md-4 offset-md-4 text-center">
+
+<input type="file" id="fileInput" accept=".jpg,.jpeg,.png" onchange="handleImageUpload()" class="form-control mt-2" style="max-width: 200px;">
+<div id="resultado"></div>   
+
+
             <video id="video" playsinline autoplay style="width: 1px;"></video>
   
             <canvas id="canvas" width="400" height="400" style="max-width: 100%;"></canvas>
@@ -43,7 +54,7 @@
 
       <div class="b-example-divider"></div>
 
-      <div id="resultado"></div>    
+       
 
       <div class="b-example-divider mb-0"></div>
     </main>
@@ -73,6 +84,60 @@
     window.onload = function() {
       mostrarCamara();
     }
+
+
+
+
+
+function handleImageUpload() {
+  var fileInput = document.getElementById('fileInput');
+  var file = fileInput.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var img = new Image();
+    img.onload = function() {
+      // Redimensionar la imagen
+      var resized = document.createElement('canvas');
+      var ctx3 = resized.getContext('2d');
+      resized.width = 100;
+      resized.height = 100;
+      ctx3.drawImage(img, 0, 0, 100, 100);
+
+      // Obtener los datos de la imagen redimensionada
+      var imgData = ctx3.getImageData(0, 0, 100, 100);
+
+      var arr = [];
+      var arr100 = [];
+
+      for (var p = 0; p < imgData.data.length; p += 4) {
+        var rojo = imgData.data[p] / 255;
+        var verde = imgData.data[p+1] / 255;
+        var azul = imgData.data[p+2] / 255;
+
+        var gris = (rojo+verde+azul)/3;
+
+        arr100.push([gris]);
+        if (arr100.length == 100) {
+          arr.push(arr100);
+          arr100 = [];
+        }
+      }
+
+      arr = [arr];
+
+      var tensor = tf.tensor4d(arr);
+      var resultado = modelo.predict(tensor);
+      var resultado_array = resultado.dataSync();
+
+      // Mostrar el resultado
+      var resultado_div = document.getElementById("resultado");
+      resultado_div.innerHTML = resultado_array[0] > 0.5 ? "Perro" : "Gato";
+    }
+    img.src = e.target.result;
+  }
+  reader.readAsDataURL(file);
+}
+///////////////
 
 function mostrarCamara() {
   var opciones = {
